@@ -1,7 +1,6 @@
 from django.db import models
 from accounts.models import CustomUser
 
-
 class Product(models.Model):
    Cakes = 'cakes'
    BakedCakes = 'bakedcakes'
@@ -13,8 +12,8 @@ class Product(models.Model):
    ]
    name = models.CharField(max_length=50, verbose_name='商品名')
    type = models.CharField(max_length=20, verbose_name='種類', choices=TYPE)
-   price = models.IntegerField(verbose_name='価格')
-   stock = models.IntegerField(verbose_name='在庫')
+   price = models.DecimalField(max_digits=10, decimal_places=0, verbose_name='価格')
+   stock = models.PositiveIntegerField(default=0, verbose_name='在庫')  # Ensure stock is a positive integer
    comments = models.CharField(max_length=100, verbose_name='商品説明')
    size = models.CharField(max_length=50, verbose_name='サイズ')
    campaign = models.CharField(max_length=100, verbose_name='キャンペーン説明', blank=True, null=True)
@@ -23,7 +22,10 @@ class Product(models.Model):
        db_table = 'products'
    def __str__(self):
        return self.name
-       
+   def save(self, *args, **kwargs):
+       if self.stock < 0:
+           raise ValueError("Stock cannot be negative")
+       super().save(*args, **kwargs)
 
 class ProductPicture(models.Model):
    picture = models.FileField(upload_to='product_pictures')
@@ -40,7 +42,7 @@ class ProductPicture(models.Model):
        return self.product.name + ':' + str(self.priority)
 
 class CartItem(models.Model):
-   qty = models.PositiveIntegerField()
+   qty = models.PositiveIntegerField(default=1)
    product = models.ForeignKey(Product, on_delete=models.CASCADE)
    user = models.ForeignKey(
        CustomUser, on_delete=models.CASCADE

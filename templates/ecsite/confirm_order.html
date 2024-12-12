@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>注文確認</h2>
+    <p>注文が完了しました。以下の内容で注文を受け付けました。</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>数量</th>
+                <th>価格</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.orderitem_set.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.product.price }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <p><strong>合計金額: </strong>{{ order.total_price }}</p>
+    
+    <a href="{% url 'ecsite:list' %}">商品リストに戻る</a>
+{% endblock %}

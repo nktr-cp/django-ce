@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+<h1>ショッピングカート</h1>
+
+    {% if cart_items.exists %}
+        <table>
+            <thead>
+                <tr>
+                    <th>商品</th>
+                    <th>量</th>
+                    <th>値段</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td>{{ item.product.price }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p><strong>合計金額: </strong>{{ total_price }}</p>
+
+        <form action="{% url 'ecsite:confirm_order' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">購入手続きへ進む</button>
+        </form>
+    {% else %}
+        <p>カートには何も入っていません</p>
+    {% endif %}
+
+    <a href="{% url 'ecsite:list' %}">商品リストに戻る</a>
+{% endblock %}
