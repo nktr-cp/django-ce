@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 	"accounts",
+	"ecsite",
 	"bootstrap4",
 	"django.contrib.sites",
 	"allauth",
@@ -53,7 +54,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
-LOGIN_REDIRECT_URL = "/accounts/home"
+LOGIN_REDIRECT_URL = "/ecsite/home"
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
 ACCOUNT_EMAIL_VERIFICATION = "none"
 

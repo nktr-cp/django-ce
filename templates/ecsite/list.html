@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% block content %}
+   <div class="col-md-8 offset-md-2">
+       <section class="products">
+           <h3 class="text-center">ケーキのご案内</h3>
+           <h5 class="text-center font-italic">Cakes</h5>
+           <ul class="clearfix">
+               {% for product in cakes %}
+                   {% for picture in product.productpictures_set.all %}
+                       {% if forloop.first %}
+                           <li><a href="{% url 'ecsite:product_detail' pk=product.id %}">
+                               <img class="rounded img-fluid" src={{ picture.picture.url }}>
+                               {{ product.name }}</a></li>
+                       {% endif %}
+                   {% endfor %}
+               {% endfor %}
+           </ul>
+       </section>
+       <hr class="hr-text" data-content="AND">
+       <section class="products" id="bakedcake">
+           <h3 class="text-center">焼菓子のご案内</h3>
+           <h5 class="text-center font-italic">Baked cakes & cookies</h5>
+           <ul class="clearfix">
+               {% for product in bakedcakes %}
+                   {% for picture in product.productpictures_set.all %}
+                       {% if forloop.first %}
+                           <li><a href="{% url 'ecsite:product_detail' pk=product.id %}">
+                               <img class="rounded img-fluid d-inline-block " width="200px" height="200px"
+                                   src={{ picture.picture.url }}>
+                               {{ product.name }}</a></li>
+                       {% endif %}
+                   {% endfor %}
+               {% endfor %}
+           </ul>
+       </section>
+       <hr class="hr-text" data-content="AND">
+       <section class="products" id="goods">
+           <h3 class="text-center">備品</h3>
+           <h5 class="text-center font-italic">Goods</h5>
+           <ul class="clearfix">
+               {% for product in goods %}
+                   {% for picture in product.productpictures_set.all %}
+                       {% if forloop.first %}
+                           <li><a href="{% url 'ecsite:product_detail' pk=product.id %}">
+                               <img class="rounded img-fluid d-inline-block " width="200px" height="200px"
+                                   src={{ picture.picture.url }}>
+                               {{ product.name }}</a></li>
+                       {% endif %}
+                   {% endfor %}
+               {% endfor %}
+           </ul>
+       </section>
+   </div>
+{% endblock %}
