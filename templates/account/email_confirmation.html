@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block head_title %}メールアドレスの確認{% endblock %}
+
+{% block content %}
+<div class="email-confirmation-container">
+    <h1>メールアドレスの確認</h1>
+    
+    <p>{{ user.email }} 宛に確認メールを送信しました。</p>
+    
+    <p>メールに記載されているリンクをクリックして、アカウント登録を完了してください。</p>
+    
+    <div class="additional-info">
+        <p>メールが届かない場合は:</p>
+        <ul>
+            <li>迷惑メールフォルダを確認してください</li>
+            <li>メールアドレスが正しいか確認してください</li>
+            <li>しばらく待ってから、再度確認メールを送信することができます</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

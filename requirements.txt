@@ -1,3 +1,4 @@
 django>=5.1,<6.0
 django-bootstrap4
 django-allauth
+python-dotenv

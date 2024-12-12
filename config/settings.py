@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,7 +57,6 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 LOGIN_REDIRECT_URL = "/ecsite/home"
 ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
-ACCOUNT_EMAIL_VERIFICATION = "none"
 
 BOOTSTRAP4 = {
 	"include_jquery": True,
@@ -168,8 +168,20 @@ MESSAGE_TAGS = {
 }
 
 AUTH_USER_MODEL = "accounts.CustomUser"
-ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_LOGOUT_ON_GET = True
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" # テスト
+
+# load_dotenv()
+
+# EMAIL_HOST = os.getenv('EMAIL_HOST')
+# EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
+# EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
