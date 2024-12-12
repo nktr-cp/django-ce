@@ -98,9 +98,11 @@ class ConfirmOrderView(View):
             messages.error(request, "カートに商品がありません。")
             return redirect("ecsite:cart")
         total_price = sum(item.qty * item.product.price for item in cart_items)
+        for item in cart_items:
+            item.total_price = item.qty * item.product.price
         order = Order.objects.create(user=user, total_price=total_price)
         for item in cart_items:
-            OrderItem.objects.create(order=order, product=item.product, qty=item.qty)
+            OrderItem.objects.create(order=order, product=item.product, qty=item.qty, total_price=item.total_price)
             # Reduce the product quantity
             item.product.stock -= item.qty
             item.product.save()
