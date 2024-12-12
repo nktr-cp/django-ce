@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>注文確認</h2>
-    <p>注文が完了しました。以下の内容で注文を受け付けました。</p>
+<div class="container mt-5">
+    <h2 class="mb-4">注文確認</h2>
+    <p class="alert alert-success">注文が完了しました。以下の内容で注文を受け付けました。</p>
     
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>商品名</th>
@@ -17,13 +18,14 @@
                 <tr>
                     <td>{{ item.product.name }}</td>
                     <td>{{ item.qty }}</td>
-                    <td>{{ item.product.price }}</td>
+                    <td>¥{{ item.product.price }}</td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
     
-    <p><strong>合計金額: </strong>{{ order.total_price }}</p>
+    <p class="h4"><strong>合計金額: </strong>¥{{ order.total_price }}</p>
     
-    <a href="{% url 'ecsite:list' %}">商品リストに戻る</a>
+    <a href="{% url 'ecsite:list' %}" class="btn btn-secondary mt-3">商品リストに戻る</a>
+</div>
 {% endblock %}

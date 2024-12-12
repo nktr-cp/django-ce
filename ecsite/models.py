@@ -2,13 +2,13 @@ from django.db import models
 from accounts.models import CustomUser
 
 class Product(models.Model):
-   Cakes = 'cakes'
-   BakedCakes = 'bakedcakes'
-   Goods = 'goods'
+   Fishes = 'cakes'
+   Vegetables = 'bakedcakes'
+   Meats = 'goods'
    TYPE = [
-       (Cakes, '生菓子'),
-       (BakedCakes, '焼き菓子'),
-       (Goods, '備品'),
+       (Fishes, '魚介類'),
+       (Vegetables, '野菜'),
+       (Meats, '肉類'),
    ]
    name = models.CharField(max_length=50, verbose_name='商品名')
    type = models.CharField(max_length=20, verbose_name='種類', choices=TYPE)

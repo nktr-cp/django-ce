@@ -1,62 +1,60 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-   <div class="content-wrapper">
-       <div class="container-fluid">
-           <div class="row">
-               <!--ページタイトル-->
-               <aside class="col-md-5 offset-md-1">
-                   <div class="card">
-                       <div class="card-header">
-                           {{ object.name }}
-                       </div>
-                       <div class="card-body text-center">
-                           {% for picture in object.productpicture_set.all %}
-                               {% if forloop.first %}
-									<img class="rounded img-fluid d-inline-block " width="200px" height="200px"
-									src={{ picture.picture.url }}>
-                                   <hr>
-                               {% else %}
-                                   <section class="d-flex flex-row bd-highlight mb-3">
-                                   <div id="gallery">
-                                       <img class="d-flex justify-content-start"
-                                           src={{ picture.picture.url }}>
-                                   </div>
-                               {% endif %}
-                           {% endfor %}
-                                   </section>
-                       </div>
-					</div>
-				</aside>
-				<div class="col-md-5">
-					<p>商品説明：{{ object.comments }}</p>
-					<p>大きさ：{{ object.size }}</p>
-					<p>原材料：{{ object.ingredients }}</p>
-					<hr>
-					<p>価格：{{ object.price }}</p>
-					{% if object.stock %}
-						{% if object.stock < 30 %}
-							<p>残りわずか：{{ object.stock }}です</p>
-						{% endif %}
-						{% if user.is_authenticated %}
-							{% if object in cart_contents %}
-								<button class="btn btn-sm btn-secondary" name="button">
-									すでにカートに入っています<i class="fas fa-shopping-cart"></i>
-								</button>
-							{% else %}                               
-								<form method="post" action="{% url 'ecsite:add_to_cart' %}">
-									{% csrf_token %}
-									<input type="hidden" name="product_id" value="{{ object.id }}">
-									<input type="number" name="qty" min="1" value="1" class="form-control mb-2">
-									<button type="submit" class="btn btn-sm btn-success" name="button">
-										カートに追加する<i class="fas fa-shopping-cart"></i>
-									</button>
-								</form>
-							{% endif %}
-						{% endif %}
-					{% endif %}
-				</div>
-			</div>
-		</div>
-	</div>
- {% endblock %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-7">
+            <section>
+                {% for picture in object.productpicture_set.all %}
+                    {% if forloop.first %}
+                        <img class="rounded img-fluid d-inline-block" width="200px" height="200px" src="{{ picture.picture.url }}">
+                        <hr>
+                    {% else %}
+                        <section class="d-flex flex-row bd-highlight mb-3">
+                            <div id="gallery">
+                                <img class="d-flex justify-content-start" src="{{ picture.picture.url }}">
+                            </div>
+                        </section>
+                    {% endif %}
+                {% endfor %}
+            </section>
+        </div>
+        <div class="col-md-5">
+            <p>商品説明：{{ object.comments }}</p>
+            <p>大きさ：{{ object.size }}</p>
+            <p>原材料：{{ object.ingredients }}</p>
+            <hr>
+            <p>価格：{{ object.price }}</p>
+            {% if object.stock %}
+                {% if object.stock == 0 %}
+                    <p class="text-danger">売り切れです</p>
+                {% elif object.stock < 10 %}
+                    <p class="text-warning">残りわずか：{{ object.stock }}です</p>
+                {% else %}
+                    <p class="text-success">在庫：{{ object.stock }}個 </p>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if object in cart_contents %}
+                        <form method="get" action="{% url 'ecsite:cart' %}">
+                            <button type="submit" class="btn btn-sm btn-secondary" name="button">
+                                すでにカートに入っています<i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{% url 'ecsite:add_to_cart' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ object.id }}">
+                            <input type="number" name="qty" min="1" value="1" class="form-control mb-2">
+                            <button type="submit" class="btn btn-sm btn-success" name="button">
+                                カートに追加する<i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <p class="text-danger">売り切れです</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

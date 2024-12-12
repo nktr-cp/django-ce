@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {% block content %}
-   <div class="center jumbotron">
-       <div class="text-center">
-           <h3>素材にこだわった</h3>
-           <h3>いつものケーキをご自宅で</h3>
-           <img src="/media/images/home.png" class="responsive-image">
+   <div class="jumbotron text-center">
+       <h1 class="display-4">美味しい食材をお届けします</h1>
+       <p class="lead">新鮮な食材と美味しい料理を自宅で楽しもう</p>
+       <hr class="my-4">
+       <p>今すぐ商品をチェックして、特別な食体験を始めましょう。</p>
+       <div class="row justify-content-center">
+           <div class="col-md-8">
+               <img src="/media/images/home.png" class="img-fluid mt-4" alt="Delicious Food">
+           </div>
+       </div>
+       <div class="row justify-content-center mt-4">
+           <div class="col-md-4">
+               <a class="btn btn-primary btn-lg" href="{% url 'ecsite:list' %}" role="button">商品一覧を見る</a>
+           </div>
        </div>
    </div>
 {% endblock %}
