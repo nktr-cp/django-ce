@@ -7,10 +7,11 @@
            <h5 class="text-center font-italic">Cakes</h5>
            <ul class="clearfix">
                {% for product in cakes %}
-                   {% for picture in product.productpictures_set.all %}
+                   {% for picture in product.productpicture_set.all %}
                        {% if forloop.first %}
-                           <li><a href="{% url 'ecsite:product_detail' pk=product.id %}">
-                               <img class="rounded img-fluid" src={{ picture.picture.url }}>
+                           <li><a href="{% url 'ecsite:detail' pk=product.id %}">
+							   <img class="rounded img-fluid d-inline-block " width="200px" height="200px"
+							   src={{ picture.picture.url }}>
                                {{ product.name }}</a></li>
                        {% endif %}
                    {% endfor %}
@@ -23,9 +24,9 @@
            <h5 class="text-center font-italic">Baked cakes & cookies</h5>
            <ul class="clearfix">
                {% for product in bakedcakes %}
-                   {% for picture in product.productpictures_set.all %}
+                   {% for picture in product.productpicture_set.all %}
                        {% if forloop.first %}
-                           <li><a href="{% url 'ecsite:product_detail' pk=product.id %}">
+                           <li><a href="{% url 'ecsite:detail' pk=product.id %}">
                                <img class="rounded img-fluid d-inline-block " width="200px" height="200px"
                                    src={{ picture.picture.url }}>
                                {{ product.name }}</a></li>
@@ -40,9 +41,9 @@
            <h5 class="text-center font-italic">Goods</h5>
            <ul class="clearfix">
                {% for product in goods %}
-                   {% for picture in product.productpictures_set.all %}
+                   {% for picture in product.productpicture_set.all %}
                        {% if forloop.first %}
-                           <li><a href="{% url 'ecsite:product_detail' pk=product.id %}">
+                           <li><a href="{% url 'ecsite:detail' pk=product.id %}">
                                <img class="rounded img-fluid d-inline-block " width="200px" height="200px"
                                    src={{ picture.picture.url }}>
                                {{ product.name }}</a></li>
