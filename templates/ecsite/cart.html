@@ -10,6 +10,7 @@
                 <tr>
                     <th>商品</th>
                     <th>量</th>
+                    <th>単価</th>
                     <th>値段</th>
                     <th>操作</th>
                 </tr>
@@ -22,10 +23,11 @@
                             <form action="{% url 'ecsite:cart' %}" method="post" style="display:inline;">
                                 {% csrf_token %}
                                 <input type="hidden" name="item_id" value="{{ item.id }}">
-                                <input type="number" name="qty" min="1" value="{{ item.qty }}" class="form-control d-inline-block w-25">
+                                <input type="number" name="qty" min="1" max="{{ item.product.stock }}" value="{{ item.qty }}" class="form-control d-inline-block w-25">
                                 <button type="submit" class="btn btn-primary btn-sm">更新</button>
                             </form>
                         </td>
+                        <td>¥{{ item.product.price }}</td>
                         <td>¥{{ item.total_price }}</td>
                         <td>
                             <form action="{% url 'ecsite:cart' %}" method="post" style="display:inline;">

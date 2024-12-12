@@ -33,13 +33,6 @@ class ProductDetailView(DetailView):
             context["cart_contents"] = Product.objects.filter(id__in=mycartitem)
         return context
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from .models import CartItem
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.contrib import messages
-
 @method_decorator(login_required, name='dispatch')
 class CartView(View):
     def get(self, request):
@@ -48,7 +41,6 @@ class CartView(View):
         total_price = sum(item.qty * item.product.price for item in cart_items)
         for item in cart_items:
             item.total_price = item.qty * item.product.price
-            print(item.total_price)
         return render(request, 'ecsite/cart.html', {'cart_items': cart_items, 'total_price': total_price})
 
     def post(self, request):
@@ -62,9 +54,12 @@ class CartView(View):
         else:
             qty = request.POST.get('qty')
             if qty and qty.isdigit() and int(qty) > 0:
-                cart_item.qty = int(qty)
-                cart_item.save()
-                messages.success(request, "数量が更新されました。")
+                if int(qty) > cart_item.product.stock:
+                    messages.error(request, "在庫が不足しています。")
+                else:
+                    cart_item.qty = int(qty)
+                    cart_item.save()
+                    messages.success(request, "数量が更新されました。")
             else:
                 messages.error(request, "数量は正の整数でなければなりません。")
 
@@ -72,21 +67,27 @@ class CartView(View):
 
 class AddToCartView(View):
     def post(self, request):
-        product_id = request.POST.get("product_id")
-        qty = request.POST.get("qty")
-        if not qty or not qty.isdigit() or int(qty) <= 0:
-            messages.error(request, "数量は正の整数でなければなりません。")
-            return redirect("ecsite:detail", pk=product_id)
-        qty = int(qty)
+        product_id = request.POST.get('product_id')
+        qty = int(request.POST.get('qty', 1))
         product = get_object_or_404(Product, id=product_id)
         user = request.user
+
+        if product.stock < qty:
+            messages.error(request, "在庫が不足しています。")
+            return redirect('ecsite:detail', pk=product_id)
+
         cart_item, created = CartItem.objects.get_or_create(user=user, product=product)
         if not created:
+            if product.stock < cart_item.qty + qty:
+                messages.error(request, "在庫が不足しています。")
+                return redirect('ecsite:detail', pk=product_id)
             cart_item.qty += qty
         else:
             cart_item.qty = qty
         cart_item.save()
-        return redirect("ecsite:cart")
+
+        messages.success(request, "商品がカートに追加されました。")
+        return redirect('ecsite:cart')
 
 @method_decorator(login_required, name="dispatch")
 class ConfirmOrderView(View):

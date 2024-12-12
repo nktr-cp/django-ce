@@ -44,7 +44,7 @@
                         <form method="post" action="{% url 'ecsite:add_to_cart' %}">
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ object.id }}">
-                            <input type="number" name="qty" min="1" value="1" class="form-control mb-2">
+                            <input type="number" name="qty" min="1" max="{{ object.stock }}" value="1" class="form-control mb-2">
                             <button type="submit" class="btn btn-sm btn-success" name="button">
                                 カートに追加する<i class="fas fa-shopping-cart"></i>
                             </button>
